@@ -11,10 +11,10 @@
     ```
     package main
 
-    import (
-	    "bufio"
-	    "fmt"
-	    "os"
+    import ( 
+      "bufio"
+      "fmt"
+      "os"
     )
 
     func main() {
@@ -25,13 +25,13 @@
       }
       defer file.Close()
       
-	    scanner := bufio.NewScanner(file)
-	    for scanner.Scan() {
-		    fmt.Println(scanner.Text())
-	    }
-	    if err := scanner.Err(); err != nil {
-		    fmt.Fprintln(os.Stderr, "reading standard input:", err)
-	    }
+      scanner := bufio.NewScanner(file)
+      for scanner.Scan() {
+        fmt.Println(scanner.Text())
+      }
+      if err := scanner.Err(); err != nil {
+        fmt.Fprintln(os.Stderr, "reading standard input:", err)
+      }
     }
     ```
   - ...
@@ -42,10 +42,10 @@
     package main
 
     import (
-	    "bufio"
+      "bufio"
       "encoding/binary"
-	    "fmt"
-	    "os"
+      "fmt"
+      "os"
     )
 
     func main() {
@@ -56,12 +56,15 @@
       }
       defer file.Close()
       
-	    reader := bufio.NewReader(file)
+      reader := bufio.NewReader(file)
       
-      var x8 int8
       var x32 int32
-      binary.Read(reader, binary.LittleEndian, &x8)
-      if n, err := binary.Read(reader, binary.LittleEndian, &x32); n == 0 && err == io.EOF {
+      if err := binary.Read(reader, binary.LittleEndian, &x32); err != nil {
+        fmt.Println("ERROR! (maybe EOF)")
+      }
+      
+      buff := make([]byte, buffSize)
+      if n, err := reader.Read(buff), n == 0 && err == io.EOF {
         fmt.Println("EOF")
       }
     }
@@ -69,6 +72,30 @@
     
   - write
     ```
-    
+    package main
+
+    import (
+      "bufio"
+      "encoding/binary"
+      "fmt"
+      "os"
+    )
+
+    func main() {
+      file, err := os.Create("text.dat")
+      if err != nil {
+        fmt.Printf("file open error!\n")
+        return
+      }
+      defer file.Close()
+      
+      writer := bufio.NewWriter(file)
+      
+      //... data := make([]byte, size)
+      
+      if n, err := writer.Write(data); err != nil {
+        fmt.Printf("ERROR: %v\n", err)
+      }
+    }
     ```
     
