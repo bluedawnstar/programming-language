@@ -61,7 +61,7 @@
       var x8 int8
       var x32 int32
       binary.Read(reader, binary.LittleEndian, &x8)
-      if n, err := binary.Read(reader, binary.LittleEndian, &x32); n == 0 && err == io.EOF {
+      if n, err := binary.Read(reader, binary.LittleEndian, &x32); n == 0 && err == io.EOF {
         fmt.Println("EOF")
       }
     }
