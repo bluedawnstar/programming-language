@@ -1,2 +1,5 @@
 *.exe
 *.pdb
+debug/
+release/
+target/
